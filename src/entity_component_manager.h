@@ -2,6 +2,7 @@
 #define _ENTITY_COMPONENT_MANAGER_H
 
 #include "entity_component.h"
+#include "entity_manager.h"
 #include "sprite_component.h"
 #include "transform_component.h"
 

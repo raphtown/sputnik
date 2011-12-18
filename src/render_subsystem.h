@@ -11,7 +11,7 @@
 
 class RenderSubsystem : public Subsystem {
 protected:
-	void processEntity(const Entity &entity);
+	void process_entity(const Entity &entity);
 
 public:
 	RenderSubsystem(EntityManager *em, EntityComponentManager *ecm);

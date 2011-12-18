@@ -12,9 +12,7 @@
 
 typedef unsigned int Entity;
 
-// ComponentTypeMap is map<component name, map<entity, component>>
-typedef std::map<Entity, EntityComponent *> EntityComponentMap;
-typedef std::map<unsigned short, EntityComponentMap> ComponentTypeMap;
+class EntityComponentManager;
 
 class EntityManager {
 private:
@@ -23,8 +21,7 @@ private:
 	// just make ids sequential
     int nextId;
 
-    ComponentTypeMap components;
-	std::map<unsigned short, std::set<const Entity>> entities;
+	std::map<const Entity, std::map<unsigned short, EntityComponent *>> entities;
 
 public:
 	EntityManager(EntityComponentManager *ecm);
@@ -33,6 +30,7 @@ public:
     const Entity create();
     void destroy(const Entity &entity);
     const Entity get(unsigned int id);
+    bool has(const Entity &entity, unsigned short component_type);
 
 	// This method instantiates the component and adds it to the entity.
 	// An example call is entity_manager.add<TransformComponent>(entity)
@@ -41,25 +39,28 @@ public:
 		C *component = ecm->create<C>();
 		unsigned short component_type = component->get_component_type();
 
-		components[component_type][entity] = component;
-		entities[component_type].insert(entity);
+		entities[entity][component_type] = component;
 
 		return component;
     }
 
-	// This method gets the desired component 
+	// This method gets the desired component
+	// entity_manager.get<TransformComponent>(entity)
     template <class C>
     C *get(const Entity &entity) {
 		static const unsigned short component_type = ecm->get_id<C>();
-        EntityComponent *component = components[component_type][entity];
+        EntityComponent *component = entities[entity][component_type];
 
         return dynamic_cast<C *>(component);
     }
 
+	// This method returns true if the entity has the given component
+	// entity_manager.has<TransformComponent>(entity)
 	template <class C>
-	const std::set<const Entity> &get_all_with() {
+	bool has(const Entity &entity) {
 		static const unsigned short component_type = ecm->get_id<C>();
-		return entities[component_type];
+
+		return entities[entity].count(component_type) > 0;
 	}
 };
 

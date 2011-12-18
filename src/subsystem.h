@@ -16,7 +16,7 @@ protected:
 	std::set<const Entity> active;
 
 	Subsystem(EntityManager *em, EntityComponentManager *ecm);
-	virtual void processEntity(const Entity &entity) = 0;
+	virtual void process_entity(const Entity &entity) = 0;
 
 	template <class C>
 	void require() {
@@ -27,6 +27,7 @@ protected:
 public:
 	virtual ~Subsystem();
 
+	void changed(const Entity &entity);
 	void process();
 };
 
