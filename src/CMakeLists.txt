@@ -1,11 +1,14 @@
 cmake_minimum_required (VERSION 2.6)
 project (sputnik)
 
+file(GLOB SOURCE_FILES *.cpp)
+file(GLOB HEADER_FILES *.h)
+
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/Modules/")
 find_package(Allegro5 REQUIRED)
 
-set (sputnik_VERSION_MAJOR 0)
-set (sputnik_VERSION_MINOR 1)
+set(sputnik_VERSION_MAJOR 0)
+set(sputnik_VERSION_MINOR 1)
 
 configure_file (
   "${PROJECT_SOURCE_DIR}/sputnik_config.h.in"
@@ -17,5 +20,6 @@ include_directories(
   "${ALLEGRO5_INCLUDE_DIR}"
 )
 
-add_executable(sputnik sputnik.cpp)
+add_executable(sputnik ${SOURCE_FILES} ${HEADER_FILES})
 target_link_libraries(sputnik ${ALLEGRO5_LIBRARIES})
+
