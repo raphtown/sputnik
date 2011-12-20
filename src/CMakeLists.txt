@@ -18,4 +18,4 @@ include_directories(
 )
 
 add_executable(sputnik sputnik.cpp)
-target_link_libraries(sputnik ${ALLEGRO_LIBRARY})
+target_link_libraries(sputnik ${ALLEGRO5_LIBRARY})
