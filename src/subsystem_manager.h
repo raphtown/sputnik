@@ -3,8 +3,9 @@
 
 #include <vector>
 
-#include "entity_manager.h"
-#include "subsystem.h"
+#include "entity.h"
+
+class Subsystem;
 
 class SubsystemManager
 {

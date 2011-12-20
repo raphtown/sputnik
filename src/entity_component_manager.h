@@ -5,9 +5,7 @@
 #include <string>
 #include <typeinfo>
 
-#include "entity_component.h"
-#include "sprite_component.h"
-#include "transform_component.h"
+class EntityComponent;
 
 class EntityComponentManager
 {
@@ -25,13 +23,6 @@ public:
 
     EntityComponent *create(unsigned short id);
     unsigned short get_num_components();
-
-    template <class C>
-    C *create()
-    {
-        static const unsigned short component_id = name_to_id[typeid(C).name()];
-        return new C(component_id);
-    }
 
     template <class C>
     unsigned short get_id()

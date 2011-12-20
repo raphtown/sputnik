@@ -3,9 +3,7 @@
 
 #include <allegro5/allegro.h>
 
-#include "debug.h"
-
-#include "allegro_display.h"
+class AllegroDisplay;
 
 class AllegroEvents
 {

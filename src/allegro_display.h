@@ -3,8 +3,6 @@
 
 #include <allegro5/allegro.h>
 
-#include "debug.h"
-
 class AllegroDisplay
 {
 private:

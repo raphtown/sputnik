@@ -1,5 +1,7 @@
 #include "subsystem_manager.h"
 
+#include "subsystem.h"
+
 SubsystemManager::SubsystemManager()
 {
 }

@@ -4,25 +4,23 @@
 #include <set>
 #include <vector>
 
-#include "entity_component_manager.h"
-#include "entity_manager.h"
+#include "world.h"
 
 class Subsystem
 {
 protected:
-    EntityManager *em;
-    EntityComponentManager *ecm;
+    World *world;
 
     std::vector<bool> interests;
     std::set<Entity> active;
 
-    Subsystem(EntityManager *em, EntityComponentManager *ecm);
+    Subsystem(World *world);
     virtual void process_entity(const Entity &entity) = 0;
 
     template <class C>
     void require()
     {
-        static const unsigned short component_type = ecm->get_id<C>();
+        static const unsigned short component_type = world->get_component_type<C>();
         interests[component_type] = true;
     }
 
@@ -34,3 +32,4 @@ public:
 };
 
 #endif
+

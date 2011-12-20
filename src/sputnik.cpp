@@ -7,9 +7,7 @@
 
 #include "allegro_display.h"
 #include "allegro_events.h"
-#include "entity_component_manager.h"
-#include "entity_manager.h"
-#include "subsystem_manager.h"
+#include "world.h"
 
 #include "render_subsystem.h"
 #include "transform_component.h"
@@ -26,25 +24,22 @@ int main(int argc, char **argv)
     AllegroEvents events;
     events.register_source(&display);
 
-    EntityComponentManager ecm;
-    EntityManager em(&ecm);
-    SubsystemManager sm;
+    World world;
+    RenderSubsystem rs(&world);
+    world.add_subsystem(&rs);
 
-    RenderSubsystem rs(&em, &ecm);
-    sm.register_subsystem(&rs);
-
-    const Entity player = em.create();
-    SpriteComponent *sc = em.add<SpriteComponent>(player);
+    const Entity player = world.create();
+    SpriteComponent *sc = world.add<SpriteComponent>(player);
     sc->filename = new char[100];
     strcpy(sc->filename, "../assets/ship.png");
 
-    em.add<TransformComponent>(player);
-    TransformComponent *tc = em.get<TransformComponent>(player);
+    world.add<TransformComponent>(player);
+    TransformComponent *tc = world.get<TransformComponent>(player);
     tc->x = 30;
     tc->y = 30;
     tc->rotation = 0;
-
-    sm.refresh(player);
+    
+    world.refresh(player);
 
     bool quit = false;
     while (!quit)
@@ -61,11 +56,11 @@ int main(int argc, char **argv)
 
         al_clear_to_color(al_map_rgb(0, 0, 0));
         rs.process();
-
         display.flip();
     }
 
-    em.destroy(player);
+    world.destroy(player);
 
     return 0;
 }
+

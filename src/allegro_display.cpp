@@ -1,5 +1,7 @@
 #include "allegro_display.h"
 
+#include "debug.h"
+
 AllegroDisplay::AllegroDisplay(unsigned int _width, unsigned int _height) : width(_width), height(_height)
 {
     display = al_create_display(width, height);

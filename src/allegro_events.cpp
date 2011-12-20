@@ -1,5 +1,9 @@
 #include "allegro_events.h"
 
+#include "debug.h"
+
+#include "allegro_display.h"
+
 AllegroEvents::AllegroEvents()
 {
     queue = al_create_event_queue();

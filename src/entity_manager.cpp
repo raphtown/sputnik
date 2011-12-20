@@ -1,6 +1,10 @@
 #include "entity_manager.h"
 
-EntityManager::EntityManager(EntityComponentManager *_ecm) : ecm(_ecm), nextId(0)
+#include "debug.h"
+
+#include "entity_component.h"
+
+EntityManager::EntityManager() : next_id(0)
 {
 }
 
@@ -16,9 +20,13 @@ EntityManager::~EntityManager()
     }
 }
 
+void EntityManager::add(const Entity &entity, EntityComponent *component) {
+    entities[entity][component->get_component_type()] = component;
+}
+
 const Entity EntityManager::create()
 {
-    return nextId++;
+    return next_id++;
 }
 
 void EntityManager::destroy(const Entity &entity)
@@ -36,6 +44,10 @@ void EntityManager::destroy(const Entity &entity)
 const Entity EntityManager::get(unsigned int id)
 {
     return id;
+}
+
+EntityComponent *EntityManager::get(const Entity &entity, unsigned short component_type) {
+    return entities[entity][component_type];
 }
 
 bool EntityManager::has(const Entity &entity, unsigned short component_type)

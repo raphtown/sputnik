@@ -1,6 +1,8 @@
 #include "subsystem.h"
 
-Subsystem::Subsystem(EntityManager *_em, EntityComponentManager *_ecm) : em(_em), ecm(_ecm), interests(ecm->get_num_components(), false)
+Subsystem::Subsystem(World *_world) : 
+          world(_world)
+        , interests(std::vector<bool>(_world->get_num_components(), false))
 {
 }
 
@@ -15,7 +17,7 @@ void Subsystem::changed(const Entity &entity)
     {
         if (*iter)
         {
-            if (!em->has(entity, pos))
+            if (!world->has(entity, pos))
             {
                 return;
             }
@@ -34,3 +36,4 @@ void Subsystem::process()
         process_entity(*iter);
     }
 }
+

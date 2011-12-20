@@ -1,5 +1,8 @@
 #include "entity_component_manager.h"
 
+#include "sprite_component.h"
+#include "transform_component.h"
+
 EntityComponentManager::EntityComponentManager() : num_components(0)
 {
     register_components();
