@@ -13,7 +13,7 @@ protected:
 	EntityComponentManager *ecm;
 
 	std::vector<bool> interests;
-	std::set<const Entity> active;
+	std::set<Entity> active;
 
 	Subsystem(EntityManager *em, EntityComponentManager *ecm);
 	virtual void process_entity(const Entity &entity) = 0;

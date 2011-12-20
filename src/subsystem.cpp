@@ -22,7 +22,7 @@ void Subsystem::changed(const Entity &entity) {
 }
 
 void Subsystem::process() {
-	for (std::set<const Entity>::const_iterator iter = active.begin(); iter != active.end(); iter++) {
+	for (std::set<Entity>::const_iterator iter = active.begin(); iter != active.end(); iter++) {
 		process_entity(*iter);
 	}
 }

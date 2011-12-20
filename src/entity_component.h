@@ -1,9 +1,6 @@
 #ifndef _ENTITY_COMPONENT_H
 #define _ENTITY_COMPONENT_H
 
-#include <map>
-#include <string>
-
 class EntityComponent {
 private:
 	const unsigned short component_type;

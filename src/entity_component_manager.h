@@ -1,8 +1,11 @@
 #ifndef _ENTITY_COMPONENT_MANAGER_H
 #define _ENTITY_COMPONENT_MANAGER_H
 
+#include <map>
+#include <string>
+#include <typeinfo>
+
 #include "entity_component.h"
-#include "entity_manager.h"
 #include "sprite_component.h"
 #include "transform_component.h"
 

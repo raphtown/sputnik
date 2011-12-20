@@ -14,7 +14,7 @@ void display_error(const char *msg, const char *expr, const char *file, unsigned
 
 void display_error(const char *msg, const char *expr, const char *file, unsigned int line, const char *function) {
 	fprintf(stderr, msg);
-	fprintf(stderr, "\n\t%s:%d (in %s). %s is false.\n", __FILE__, __LINE__, __FUNCTION__, (#expr));
+	fprintf(stderr, "\n\t%s:%d (in %s). %s is false.\n", file, line, function, expr);
 	fprintf(stderr, "\n");
 }
 
