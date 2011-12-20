@@ -25,32 +25,37 @@ public:
     EntityManager(EntityComponentManager *ecm);
     ~EntityManager();
 
-    const Entity create();
-    void destroy(const Entity &entity);
-    const Entity get(unsigned int id);
-    bool has(const Entity &entity, unsigned short component_type);
-
     // This method instantiates the component and adds it to the entity.
     // An example call is entity_manager.add<TransformComponent>(entity)
     template <class C>
     C *add(const Entity &entity);
+
+    const Entity create();
+    void destroy(const Entity &entity);
 
     // This method gets the desired component
     // entity_manager.get<TransformComponent>(entity)
     template <class C>
     C *get(const Entity &entity);
 
+    // This method gets the desired component by component type
+    const Entity get(unsigned int id);
+
     // This method returns true if the entity has the given component
     // entity_manager.has<TransformComponent>(entity)
     template <class C>
     bool has(const Entity &entity);
+
+    // This method returns true if the entity has the given component by
+    // component_type
+    bool has(const Entity &entity, unsigned short component_type);
 };
 
 template <class C>
 C *EntityManager::add(const Entity &entity)
 {
     C *component = ecm->create<C>();
-    unsigned short component_type = component->get_component_type();
+    static const unsigned short component_type = component->get_component_type();
 
     entities[entity][component_type] = component;
     return component;
