@@ -9,12 +9,13 @@
 #include "subsystem.h"
 #include "transform_component.h"
 
-class RenderSubsystem : public Subsystem {
+class RenderSubsystem : public Subsystem
+{
 protected:
-	void process_entity(const Entity &entity);
+    void process_entity(const Entity &entity);
 
 public:
-	RenderSubsystem(EntityManager *em, EntityComponentManager *ecm);
+    RenderSubsystem(EntityManager *em, EntityComponentManager *ecm);
 };
 
 #endif

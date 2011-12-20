@@ -14,54 +14,58 @@
 #include "render_subsystem.h"
 #include "transform_component.h"
 #include "sprite_component.h"
- 
-int main(int argc, char **argv) {
-	SPUTNIK_ASSERT(al_init(), "Failed to initialize allegro");
-	SPUTNIK_ASSERT(al_init_image_addon(), "Failed to initialize allegro image");
 
-	SPUTNIK_ASSERT(al_filename_exists("../assets/ship.png"), "No ship.png");
- 
-	AllegroDisplay display(640, 480);
-	AllegroEvents events;
-	events.register_source(&display);
+int main(int argc, char **argv)
+{
+    SPUTNIK_ASSERT(al_init(), "Failed to initialize allegro");
+    SPUTNIK_ASSERT(al_init_image_addon(), "Failed to initialize allegro image");
 
-	EntityComponentManager ecm;
-	EntityManager em(&ecm);
-	SubsystemManager sm;
+    SPUTNIK_ASSERT(al_filename_exists("../assets/ship.png"), "No ship.png");
 
-	RenderSubsystem rs(&em, &ecm);
-	sm.register_subsystem(&rs);
+    AllegroDisplay display(640, 480);
+    AllegroEvents events;
+    events.register_source(&display);
 
-	const Entity player = em.create();
-	SpriteComponent *sc = em.add<SpriteComponent>(player);
-	sc->filename = new char[100];
-	strcpy(sc->filename, "../assets/ship.png");
+    EntityComponentManager ecm;
+    EntityManager em(&ecm);
+    SubsystemManager sm;
 
-	em.add<TransformComponent>(player);
-	TransformComponent *tc = em.get<TransformComponent>(player);
-	tc->x = 30;
-	tc->y = 30;
-	tc->rotation = 0;
+    RenderSubsystem rs(&em, &ecm);
+    sm.register_subsystem(&rs);
 
-	sm.refresh(player);
+    const Entity player = em.create();
+    SpriteComponent *sc = em.add<SpriteComponent>(player);
+    sc->filename = new char[100];
+    strcpy(sc->filename, "../assets/ship.png");
 
-	bool quit = false;
-	while (!quit) {
-		ALLEGRO_EVENT ev;
+    em.add<TransformComponent>(player);
+    TransformComponent *tc = em.get<TransformComponent>(player);
+    tc->x = 30;
+    tc->y = 30;
+    tc->rotation = 0;
 
-		while (events.get(&ev)) {
-			if (ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE) {
-				quit = true;
-			}
-		}
+    sm.refresh(player);
 
-		al_clear_to_color(al_map_rgb(0, 0, 0));
-		rs.process();
+    bool quit = false;
+    while (!quit)
+    {
+        ALLEGRO_EVENT ev;
 
-		display.flip();
-	}
+        while (events.get(&ev))
+        {
+            if (ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE)
+            {
+                quit = true;
+            }
+        }
 
-	em.destroy(player);
- 
-	return 0;
+        al_clear_to_color(al_map_rgb(0, 0, 0));
+        rs.process();
+
+        display.flip();
+    }
+
+    em.destroy(player);
+
+    return 0;
 }

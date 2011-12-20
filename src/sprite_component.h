@@ -5,11 +5,12 @@
 
 #include "entity_component.h"
 
-struct SpriteComponent : public EntityComponent {
-	char *filename;
+struct SpriteComponent : public EntityComponent
+{
+    char *filename;
 
-	SpriteComponent(unsigned short component_type);
-	~SpriteComponent();
+    SpriteComponent(unsigned short component_type);
+    ~SpriteComponent();
 };
 
 #endif

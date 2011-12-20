@@ -3,12 +3,13 @@
 
 #include "entity_component.h"
 
-struct TransformComponent : public EntityComponent {
-	float x, y;
-	float rotation;
+struct TransformComponent : public EntityComponent
+{
+    float x, y;
+    float rotation;
 
-	TransformComponent(unsigned short component_type);
-	~TransformComponent();
+    TransformComponent(unsigned short component_type);
+    ~TransformComponent();
 };
 
 

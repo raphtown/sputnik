@@ -7,17 +7,18 @@
 
 #include "allegro_display.h"
 
-class AllegroEvents {
+class AllegroEvents
+{
 private:
-	ALLEGRO_EVENT_QUEUE *queue;
+    ALLEGRO_EVENT_QUEUE *queue;
 
 public:
-	AllegroEvents();
-	~AllegroEvents();
+    AllegroEvents();
+    ~AllegroEvents();
 
-	void register_source(AllegroDisplay *display);
-	
-	bool get(ALLEGRO_EVENT *ev);
+    void register_source(AllegroDisplay *display);
+
+    bool get(ALLEGRO_EVENT *ev);
 };
 
 #endif

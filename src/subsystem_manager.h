@@ -6,16 +6,17 @@
 #include "entity_manager.h"
 #include "subsystem.h"
 
-class SubsystemManager {
+class SubsystemManager
+{
 private:
-	std::vector<Subsystem *> subsystems;
+    std::vector<Subsystem *> subsystems;
 
 public:
-	SubsystemManager();
-	~SubsystemManager();
+    SubsystemManager();
+    ~SubsystemManager();
 
-	void refresh(const Entity &entity);
-	void register_subsystem(Subsystem *subsystem);
+    void refresh(const Entity &entity);
+    void register_subsystem(Subsystem *subsystem);
 };
 
 #endif

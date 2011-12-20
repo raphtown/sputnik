@@ -5,19 +5,20 @@
 
 #include "debug.h"
 
-class AllegroDisplay {
+class AllegroDisplay
+{
 private:
-	ALLEGRO_DISPLAY *display;
+    ALLEGRO_DISPLAY *display;
 
-	const unsigned int width;
-	const unsigned int height;
+    const unsigned int width;
+    const unsigned int height;
 
 public:
-	AllegroDisplay(unsigned int width, unsigned int height);
-	~AllegroDisplay();
+    AllegroDisplay(unsigned int width, unsigned int height);
+    ~AllegroDisplay();
 
-	ALLEGRO_DISPLAY *expose();
-	void flip();
+    ALLEGRO_DISPLAY *expose();
+    void flip();
 };
 
 #endif

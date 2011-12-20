@@ -7,28 +7,30 @@
 #include "entity_component_manager.h"
 #include "entity_manager.h"
 
-class Subsystem {
+class Subsystem
+{
 protected:
-	EntityManager *em;
-	EntityComponentManager *ecm;
+    EntityManager *em;
+    EntityComponentManager *ecm;
 
-	std::vector<bool> interests;
-	std::set<Entity> active;
+    std::vector<bool> interests;
+    std::set<Entity> active;
 
-	Subsystem(EntityManager *em, EntityComponentManager *ecm);
-	virtual void process_entity(const Entity &entity) = 0;
+    Subsystem(EntityManager *em, EntityComponentManager *ecm);
+    virtual void process_entity(const Entity &entity) = 0;
 
-	template <class C>
-	void require() {
-		static const unsigned short component_type = ecm->get_id<C>();
-		interests[component_type] = true;
-	}
+    template <class C>
+    void require()
+    {
+        static const unsigned short component_type = ecm->get_id<C>();
+        interests[component_type] = true;
+    }
 
 public:
-	virtual ~Subsystem();
+    virtual ~Subsystem();
 
-	void changed(const Entity &entity);
-	void process();
+    void changed(const Entity &entity);
+    void process();
 };
 
 #endif

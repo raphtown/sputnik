@@ -1,17 +1,18 @@
 #ifndef _ENTITY_COMPONENT_H
 #define _ENTITY_COMPONENT_H
 
-class EntityComponent {
+class EntityComponent
+{
 private:
-	const unsigned short component_type;
+    const unsigned short component_type;
 
 protected:
-	EntityComponent(unsigned short component_type);
+    EntityComponent(unsigned short component_type);
 
 public:
-	virtual ~EntityComponent();
+    virtual ~EntityComponent();
 
-	unsigned short get_component_type();
+    unsigned short get_component_type();
 };
 
 #endif
