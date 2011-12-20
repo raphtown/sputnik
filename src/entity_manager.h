@@ -51,6 +51,7 @@ public:
 		unsigned short component_type = component->get_component_type();
 
 		entities[entity][component_type] = component;
+		return component;
     }
 
     template <class C>
