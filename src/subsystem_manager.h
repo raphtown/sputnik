@@ -16,6 +16,7 @@ public:
     SubsystemManager();
     ~SubsystemManager();
 
+    void process();
     void refresh(const Entity &entity);
     void register_subsystem(Subsystem *subsystem);
 };

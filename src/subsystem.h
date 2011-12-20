@@ -15,7 +15,6 @@ protected:
     std::set<Entity> active;
 
     Subsystem(World *world);
-    virtual void process_entity(const Entity &entity) = 0;
 
     template <class C>
     void require()
@@ -27,8 +26,8 @@ protected:
 public:
     virtual ~Subsystem();
 
-    void changed(const Entity &entity);
-    void process();
+    virtual void changed(const Entity &entity);
+    virtual void process() = 0;
 };
 
 #endif

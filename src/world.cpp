@@ -48,6 +48,11 @@ bool World::has(const Entity &entity, unsigned short component_type)
     return em->has(entity, component_type);
 }
 
+void World::process()
+{
+    sm->process();
+}
+
 void World::refresh(const Entity &entity) {
     sm->refresh(entity);
 }

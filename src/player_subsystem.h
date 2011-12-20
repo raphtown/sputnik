@@ -1,20 +1,19 @@
-#ifndef _RENDER_SUBSYSTEM_H
-#define _RENDER_SUBSYSTEM_H
+#ifndef _PLAYER_SUBSYSTEM_H
+#define _PLAYER_SUBSYSTEM_H
 
 #include "subsystem.h"
 
 class World;
 
-class RenderSubsystem : public Subsystem
+class PlayerSubsystem : public Subsystem
 {
 private:
     void process_entity(const Entity &entity);
 
 public:
-    RenderSubsystem(World *world);
+    PlayerSubsystem(World *world);
 
     void process();
 };
-
 #endif
 

@@ -24,3 +24,11 @@ void RenderSubsystem::process_entity(const Entity &entity)
     al_destroy_bitmap(bitmap);
 }
 
+void RenderSubsystem::process()
+{
+    for (std::set<Entity>::const_iterator iter = active.begin(); iter != active.end(); iter++)
+    {
+        process_entity(*iter);
+    }
+}
+

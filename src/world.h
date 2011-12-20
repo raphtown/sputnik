@@ -55,6 +55,7 @@ public:
     // component_type
     bool has(const Entity &entity, unsigned short component_type);
 
+    void process();
     void refresh(const Entity &entity);
 };
 

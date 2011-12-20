@@ -14,7 +14,8 @@ public:
     AllegroEvents();
     ~AllegroEvents();
 
-    void register_source(AllegroDisplay *display);
+    void register_display_source(AllegroDisplay *display);
+    void register_keyboard_source();
 
     bool get(ALLEGRO_EVENT *ev);
 };

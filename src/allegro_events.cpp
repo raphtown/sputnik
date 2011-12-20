@@ -15,9 +15,14 @@ AllegroEvents::~AllegroEvents()
     al_destroy_event_queue(queue);
 }
 
-void AllegroEvents::register_source(AllegroDisplay *display)
+void AllegroEvents::register_display_source(AllegroDisplay *display)
 {
     al_register_event_source(queue, al_get_display_event_source(display->expose()));
+}
+
+void AllegroEvents::register_keyboard_source()
+{
+    al_register_event_source(queue, al_get_keyboard_event_source());
 }
 
 bool AllegroEvents::get(ALLEGRO_EVENT *ev)

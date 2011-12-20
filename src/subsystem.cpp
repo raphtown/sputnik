@@ -29,11 +29,3 @@ void Subsystem::changed(const Entity &entity)
     active.insert(entity);
 }
 
-void Subsystem::process()
-{
-    for (std::set<Entity>::const_iterator iter = active.begin(); iter != active.end(); iter++)
-    {
-        process_entity(*iter);
-    }
-}
-
