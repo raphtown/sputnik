@@ -27,6 +27,14 @@ void ControllerSubsystem::process()
                     cc->key_w = true;
                 }
             }
+            else if (ev.keyboard.keycode == ALLEGRO_KEY_S)
+            {
+                for (std::set<Entity>::const_iterator iter = active.begin(); iter != active.end(); iter++)
+                {
+                    ControllerComponent *cc = world->get<ControllerComponent>(*iter);
+                    cc->key_s = true;
+                }
+            }
         }
         else if (ev.type == ALLEGRO_EVENT_KEY_UP)
         {
@@ -36,6 +44,14 @@ void ControllerSubsystem::process()
                 {
                     ControllerComponent *cc = world->get<ControllerComponent>(*iter);
                     cc->key_w = false;
+                }
+            }
+            else if (ev.keyboard.keycode == ALLEGRO_KEY_S)
+            {
+                for (std::set<Entity>::const_iterator iter = active.begin(); iter != active.end(); iter++)
+                {
+                    ControllerComponent *cc = world->get<ControllerComponent>(*iter);
+                    cc->key_s = false;
                 }
             }
         }
