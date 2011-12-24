@@ -12,6 +12,8 @@ Subsystem::~Subsystem()
 
 void Subsystem::changed(const Entity &entity)
 {
+    active.erase(entity);
+
     unsigned short pos = 0;
     for (std::vector<bool>::const_iterator iter = interests.begin(); iter != interests.end(); iter++)
     {
@@ -27,5 +29,10 @@ void Subsystem::changed(const Entity &entity)
     }
 
     active.insert(entity);
+}
+
+void Subsystem::destroyed(const Entity &entity)
+{
+    active.erase(entity);
 }
 

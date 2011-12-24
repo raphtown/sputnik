@@ -10,6 +10,14 @@ SubsystemManager::~SubsystemManager()
 {
 }
 
+void SubsystemManager::destroyed(const Entity &entity) {
+    for (std::vector<Subsystem *>::const_iterator iter = subsystems.begin(); iter != subsystems.end(); iter++)
+    {
+        Subsystem *subsystem = *iter;
+        subsystem->destroyed(entity);
+    }
+}
+
 void SubsystemManager::process()
 {
     for (std::vector<Subsystem *>::const_iterator iter = subsystems.begin(); iter != subsystems.end(); iter++)

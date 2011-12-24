@@ -1,4 +1,3 @@
-#include <stdio.h>
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_image.h>
 
@@ -32,16 +31,13 @@ int main(int argc, char **argv)
     events.register_keyboard_source();
 
     World world;
-    ControllerSubsystem cs(&world);
-    world.add_subsystem(&cs);
-    PlayerSubsystem ps(&world);
-    world.add_subsystem(&ps);
-    RenderSubsystem rs(&world);
-    world.add_subsystem(&rs);
+    world.add_subsystem(new ControllerSubsystem(&world));
+    world.add_subsystem(new PlayerSubsystem(&world));
+    world.add_subsystem(new RenderSubsystem(&world));
 
     const Entity player = world.create();
-    ControllerComponent *cc = world.add<ControllerComponent>(player);
-    PlayerComponent *pc = world.add<PlayerComponent>(player);
+    world.add<ControllerComponent>(player);
+    world.add<PlayerComponent>(player);
 
     SpriteComponent *sc = world.add<SpriteComponent>(player);
     sc->filename = new char[100];
@@ -79,8 +75,6 @@ int main(int argc, char **argv)
         world.process();
         display.flip();
     }
-
-    world.destroy(player);
 
     return 0;
 }

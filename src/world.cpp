@@ -31,7 +31,7 @@ const Entity World::create()
 
 void World::destroy(const Entity &entity)
 {
-    em->destroy(entity);
+    to_destroy.insert(entity);
 }
 
 const Entity World::get(unsigned int id)
@@ -50,10 +50,35 @@ bool World::has(const Entity &entity, unsigned short component_type)
 
 void World::process()
 {
+    while (!to_remove.empty())
+    {
+        std::pair<Entity, unsigned short> pair = to_remove.front();
+        to_remove.pop();
+
+        em->remove(pair.first, pair.second);
+    }
+
+    for (std::set<Entity>::iterator iter = to_refresh.begin(); iter != to_refresh.end(); iter++)
+    {
+        const Entity &entity = *iter;
+
+        sm->refresh(entity);
+    }
+    to_refresh.clear();
+
+    for (std::set<Entity>::iterator iter = to_destroy.begin(); iter != to_destroy.end(); iter++)
+    {
+        const Entity &entity = *iter;
+
+        sm->destroyed(entity);
+        em->destroy(entity);
+    }
+    to_destroy.clear();
+
     sm->process();
 }
 
 void World::refresh(const Entity &entity) {
-    sm->refresh(entity);
+    to_refresh.insert(entity);
 }
 

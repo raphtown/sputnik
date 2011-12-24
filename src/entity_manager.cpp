@@ -55,3 +55,8 @@ bool EntityManager::has(const Entity &entity, unsigned short component_type)
     return entities[entity].count(component_type) > 0;
 }
 
+void EntityManager::remove(const Entity &entity, unsigned short component_type)
+{
+    entities[entity].erase(component_type);
+}
+

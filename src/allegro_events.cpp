@@ -22,10 +22,13 @@ void AllegroEvents::register_display_source(AllegroDisplay *display)
 
 void AllegroEvents::register_keyboard_source()
 {
-    al_register_event_source(queue, al_get_keyboard_event_source());
+    ALLEGRO_EVENT_SOURCE *kb_event_source = al_get_keyboard_event_source();
+    SPUTNIK_ASSERT(kb_event_source, "Keyboard subsystem not installed");
+    al_register_event_source(queue, kb_event_source);
 }
 
 bool AllegroEvents::get(ALLEGRO_EVENT *ev)
 {
     return al_get_next_event(queue, ev);
 }
+

@@ -2,7 +2,11 @@
 #define _WORLD_H
 
 #include <map>
-#include <string>
+#include <queue>
+#include <set>
+#include <utility>
+
+#include "debug.h"
 
 #include "entity.h"
 #include "entity_component_manager.h"
@@ -18,6 +22,10 @@ private:
     EntityManager *em;
     EntityComponentManager *ecm;
     SubsystemManager *sm;
+
+    std::set<Entity> to_refresh;
+    std::set<Entity> to_destroy;
+    std::queue<std::pair<Entity, unsigned short> > to_remove;
 
 public:
     World();
@@ -48,6 +56,9 @@ public:
 
     // This method returns true if the entity has the given component
     // world.has<TransformComponent>(entity)
+    //
+    // Adding components is not deferred, so this can return both false and
+    // true within the same tick.
     template <class C>
     bool has(const Entity &entity);
 
@@ -57,6 +68,9 @@ public:
 
     void process();
     void refresh(const Entity &entity);
+
+    template <class C>
+    void remove(const Entity &entity);
 };
 
 template <class C>
@@ -65,12 +79,15 @@ C *World::add(const Entity &entity)
     static const unsigned short component_type = get_component_type<C>();
     EntityComponent *component = ecm->create(component_type);
     em->add(entity, component);
+    to_refresh.insert(entity);
     return dynamic_cast<C *>(component);
 }
 
 template <class C>
 C *World::get(const Entity &entity)
 {
+    SPUTNIK_ASSERT(has<C>(entity), "Entity does not have this component");
+
     static const unsigned short component_type = get_component_type<C>();
     return dynamic_cast<C *>(em->get(entity, component_type));
 }
@@ -85,6 +102,14 @@ bool World::has(const Entity &entity)
 {
     static const unsigned short component_type = get_component_type<C>();
     return em->has(entity, component_type);
+}
+
+template <class C>
+void World::remove(const Entity &entity)
+{
+    static const unsigned short component_type = get_component_type<C>();
+    to_remove.push(std::make_pair(entity, component_type));
+    to_refresh.insert(entity);
 }
 
 #endif

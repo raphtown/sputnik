@@ -2,6 +2,7 @@
 #define _ENTITY_MANAGER_H
 
 #include <map>
+#include <vector>
 
 #include "entity.h"
 
@@ -25,6 +26,7 @@ public:
     const Entity get(unsigned int id);
     EntityComponent *get(const Entity &entity, unsigned short component_type);
     bool has(const Entity &entity, unsigned short component_type);
+    void remove(const Entity &entity, unsigned short component_type);
 };
 
 #endif

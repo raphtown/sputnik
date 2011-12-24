@@ -16,6 +16,7 @@ public:
     SubsystemManager();
     ~SubsystemManager();
 
+    void destroyed(const Entity &entity);
     void process();
     void refresh(const Entity &entity);
     void register_subsystem(Subsystem *subsystem);

@@ -26,7 +26,8 @@ protected:
 public:
     virtual ~Subsystem();
 
-    virtual void changed(const Entity &entity);
+    void changed(const Entity &entity);
+    void destroyed(const Entity &entity);
     virtual void process() = 0;
 };
 
