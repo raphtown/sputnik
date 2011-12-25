@@ -8,10 +8,8 @@
 #include "allegro_events.h"
 #include "world.h"
 
-#include "controller_component.h"
-#include "controller_subsystem.h"
+#include "player_controller_subsystem.h"
 #include "player_component.h"
-#include "player_subsystem.h"
 #include "render_subsystem.h"
 #include "transform_component.h"
 #include "sprite_component.h"
@@ -31,12 +29,10 @@ int main(int argc, char **argv)
     events.register_keyboard_source();
 
     World world;
-    world.add_subsystem(new ControllerSubsystem(&world));
-    world.add_subsystem(new PlayerSubsystem(&world));
+    world.add_subsystem(new PlayerControllerSubsystem(&world));
     world.add_subsystem(new RenderSubsystem(&world));
 
     const Entity player = world.create();
-    world.add<ControllerComponent>(player);
     world.add<PlayerComponent>(player);
 
     SpriteComponent *sc = world.add<SpriteComponent>(player);
