@@ -25,7 +25,7 @@ private:
 public:
     PlayerControllerSubsystem(World *world);
     
-    void process();
+    void process(unsigned int dt);
 };
 
 #endif

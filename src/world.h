@@ -66,7 +66,7 @@ public:
     // component_type
     bool has(const Entity &entity, unsigned short component_type);
 
-    void process();
+    void process(unsigned int dt);
     void refresh(const Entity &entity);
 
     template <class C>

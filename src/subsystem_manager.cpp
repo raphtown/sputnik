@@ -18,11 +18,11 @@ void SubsystemManager::destroyed(const Entity &entity) {
     }
 }
 
-void SubsystemManager::process()
+void SubsystemManager::process(unsigned int dt)
 {
     for (std::vector<Subsystem *>::const_iterator iter = subsystems.begin(); iter != subsystems.end(); iter++)
     {
-        (*iter)->process();
+        (*iter)->process(dt);
     }
 }
 

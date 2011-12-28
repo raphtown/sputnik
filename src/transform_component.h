@@ -3,9 +3,15 @@
 
 #include "entity_component.h"
 
+struct Vector
+{
+    float x;
+    float y;
+};
+
 struct TransformComponent : public EntityComponent
 {
-    float x, y;
+    Vector position, velocity, acceleration;
     float rotation;
 
     TransformComponent(unsigned short component_type);

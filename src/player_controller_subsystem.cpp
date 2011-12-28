@@ -20,7 +20,7 @@ PlayerControllerSubsystem::PlayerControllerSubsystem(World *_world) :
     }
 }
 
-void PlayerControllerSubsystem::process()
+void PlayerControllerSubsystem::process(unsigned int dt)
 {
     ALLEGRO_EVENT ev;
     while (events.get(&ev))
@@ -53,13 +53,13 @@ void PlayerControllerSubsystem::process()
 
         if (button_states[MOVE_FORWARD])
         {
-            tc->x += cos(tc->rotation) * 5;
-            tc->y += sin(tc->rotation) * 5;
+            tc->acceleration.x += cos(tc->rotation) / 1000;
+            tc->acceleration.y += sin(tc->rotation) / 1000;
         }
         if (button_states[MOVE_BACKWARD])
         {
-            tc->x -= cos(tc->rotation) * 5;
-            tc->y -= sin(tc->rotation) * 5;
+            tc->acceleration.x -= cos(tc->rotation) / 1000;
+            tc->acceleration.y -= sin(tc->rotation) / 1000;
         }
 
         if (button_states[ROTATE_LEFT])

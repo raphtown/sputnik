@@ -6,8 +6,10 @@
 
 #include "allegro_display.h"
 #include "allegro_events.h"
+#include "platform.h"
 #include "world.h"
 
+#include "physics_subsystem.h"
 #include "player_controller_subsystem.h"
 #include "player_component.h"
 #include "render_subsystem.h"
@@ -31,6 +33,7 @@ int main(int argc, char **argv)
     World world;
     world.add_subsystem(new PlayerControllerSubsystem(&world));
     world.add_subsystem(new RenderSubsystem(&world));
+    world.add_subsystem(new PhysicsSubsystem(&world));
 
     const Entity player = world.create();
     world.add<PlayerComponent>(player);
@@ -41,12 +44,14 @@ int main(int argc, char **argv)
 
     world.add<TransformComponent>(player);
     TransformComponent *tc = world.get<TransformComponent>(player);
-    tc->x = 30;
-    tc->y = 30;
+    tc->position.x = 30;
+    tc->position.y = 30;
     tc->rotation = 0;
     
     world.refresh(player);
 
+    // Since rendering is a subsystem run once every tick one tick = one frame
+    unsigned int last = Platform::get_milliseconds();
     bool quit = false;
     while (!quit)
     {
@@ -68,7 +73,11 @@ int main(int argc, char **argv)
         }
 
         al_clear_to_color(al_map_rgb(0, 0, 0));
-        world.process();
+
+        unsigned int now = Platform::get_milliseconds();
+        world.process(now - last);
+        last = now;
+
         display.flip();
     }
 

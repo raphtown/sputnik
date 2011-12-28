@@ -28,7 +28,7 @@ public:
 
     void changed(const Entity &entity);
     void destroyed(const Entity &entity);
-    virtual void process() = 0;
+    virtual void process(unsigned int dt) = 0;
 };
 
 #endif

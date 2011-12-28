@@ -48,7 +48,7 @@ bool World::has(const Entity &entity, unsigned short component_type)
     return em->has(entity, component_type);
 }
 
-void World::process()
+void World::process(unsigned int dt)
 {
     while (!to_remove.empty())
     {
@@ -75,7 +75,7 @@ void World::process()
     }
     to_destroy.clear();
 
-    sm->process();
+    sm->process(dt);
 }
 
 void World::refresh(const Entity &entity) {
