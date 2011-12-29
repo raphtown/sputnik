@@ -23,7 +23,7 @@ private:
     bool button_states[NUM_BUTTONS];
 
 public:
-    PlayerControllerSubsystem(World *world);
+    PlayerControllerSubsystem(World &world);
     
     void process(unsigned int dt);
 };

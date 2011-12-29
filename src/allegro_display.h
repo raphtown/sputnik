@@ -8,10 +8,10 @@ class AllegroDisplay
 private:
     ALLEGRO_DISPLAY *display;
 
+public:
     const unsigned int width;
     const unsigned int height;
 
-public:
     AllegroDisplay(unsigned int width, unsigned int height);
     ~AllegroDisplay();
 

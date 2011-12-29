@@ -25,3 +25,4 @@ void AllegroDisplay::flip()
 {
     al_flip_display();
 }
+

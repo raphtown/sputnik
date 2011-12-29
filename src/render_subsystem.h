@@ -3,17 +3,23 @@
 
 #include "subsystem.h"
 
+class AllegroDisplay;
+class Vector;
 class World;
 
 class RenderSubsystem : public Subsystem
 {
 private:
-    void process_entity(const Entity &entity);
+    const AllegroDisplay *display;
+    const Entity *tracking;
+
+    void process_entity(const Vector &camera, const Entity &entity);
 
 public:
-    RenderSubsystem(World *world);
+    RenderSubsystem(World &world, const AllegroDisplay &display);
 
     void process(unsigned int dt);
+    void track(const Entity &entity);
 };
 
 #endif

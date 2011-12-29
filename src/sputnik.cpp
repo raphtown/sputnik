@@ -31,9 +31,9 @@ int main(int argc, char **argv)
     events.register_keyboard_source();
 
     World world;
-    world.add_subsystem(new PlayerControllerSubsystem(&world));
-    world.add_subsystem(new RenderSubsystem(&world));
-    world.add_subsystem(new PhysicsSubsystem(&world));
+    world.add_subsystem(new PlayerControllerSubsystem(world));
+    RenderSubsystem *rs = world.add_subsystem(new RenderSubsystem(world, display));
+    world.add_subsystem(new PhysicsSubsystem(world));
 
     const Entity player = world.create();
     world.add<PlayerComponent>(player);
@@ -46,9 +46,20 @@ int main(int argc, char **argv)
     TransformComponent *tc = world.get<TransformComponent>(player);
     tc->position.x = 30;
     tc->position.y = 30;
-    tc->rotation = 0;
     
     world.refresh(player);
+    rs->track(player);
+
+    const Entity other = world.create();
+    TransformComponent *otc = world.add<TransformComponent>(other);
+    otc->position.x = 0;
+    otc->position.y = 0;
+
+    SpriteComponent *osc = world.add<SpriteComponent>(other);
+    osc->filename = new char[100];
+    strcpy(osc->filename, "../assets/ship.png");
+
+    world.refresh(other);
 
     // Since rendering is a subsystem run once every tick one tick = one frame
     unsigned int last = Platform::get_milliseconds();

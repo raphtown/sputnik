@@ -1,5 +1,6 @@
 #include "entity_component_manager.h"
 
+#include "player_component.h"
 #include "sprite_component.h"
 #include "transform_component.h"
 
@@ -16,6 +17,10 @@ EntityComponent *internal_create(unsigned short type)
 
 void EntityComponentManager::register_components()
 {
+    creators[num_components] = internal_create<PlayerComponent>;
+    name_to_id[typeid(PlayerComponent).name()] = num_components;
+    num_components++;
+    
     creators[num_components] = internal_create<SpriteComponent>;
     name_to_id[typeid(SpriteComponent).name()] = num_components;
     num_components++;

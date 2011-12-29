@@ -3,7 +3,7 @@
 #include "transform_component.h"
 #include "world.h"
 
-PhysicsSubsystem::PhysicsSubsystem(World *_world) : Subsystem(_world)
+PhysicsSubsystem::PhysicsSubsystem(World &_world) : Subsystem(_world)
 {
     require<TransformComponent>();
 }

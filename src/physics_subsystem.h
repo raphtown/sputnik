@@ -8,7 +8,7 @@ class World;
 class PhysicsSubsystem : public Subsystem
 {
 public:
-    PhysicsSubsystem(World *world);
+    PhysicsSubsystem(World &world);
     void process(unsigned int dt);
 };
 

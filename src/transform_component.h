@@ -7,6 +7,17 @@ struct Vector
 {
     float x;
     float y;
+
+    inline void operator*=(float a)
+    {
+        x *= a;
+        y *= a;
+    }
+
+    inline float magnitude()
+    {
+        return x * x + y * y;
+    }
 };
 
 struct TransformComponent : public EntityComponent

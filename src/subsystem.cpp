@@ -1,8 +1,8 @@
 #include "subsystem.h"
 
-Subsystem::Subsystem(World *_world) : 
-          world(_world)
-        , interests(std::vector<bool>(_world->get_num_components(), false))
+Subsystem::Subsystem(World &_world) : 
+          world(&_world)
+        , interests(std::vector<bool>(_world.get_num_components(), false))
 {
 }
 

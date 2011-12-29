@@ -11,10 +11,10 @@
 #include "entity.h"
 #include "entity_component_manager.h"
 #include "entity_manager.h"
+#include "subsystem_manager.h"
 
 class EntityComponent;
 class Subsystem;
-class SubsystemManager;
 
 class World
 {
@@ -36,7 +36,8 @@ public:
     template <class C>
     C *add(const Entity &entity);
 
-    Subsystem *add_subsystem(Subsystem *subsystem);
+    template <class C>
+    C *add_subsystem(C *subsystem);
 
     const Entity create();
     void destroy(const Entity &entity);
@@ -74,7 +75,7 @@ public:
 };
 
 template <class C>
-C *World::add(const Entity &entity)
+inline C *World::add(const Entity &entity)
 {
     static const unsigned short component_type = get_component_type<C>();
     EntityComponent *component = ecm->create(component_type);
@@ -84,7 +85,13 @@ C *World::add(const Entity &entity)
 }
 
 template <class C>
-C *World::get(const Entity &entity)
+inline C *World::add_subsystem(C *subsystem) {
+    sm->register_subsystem(subsystem);
+    return subsystem;
+}
+
+template <class C>
+inline C *World::get(const Entity &entity)
 {
     SPUTNIK_ASSERT(has<C>(entity), "Entity does not have this component");
 
@@ -93,19 +100,19 @@ C *World::get(const Entity &entity)
 }
 
 template <class C>
-unsigned short World::get_component_type() {
+inline unsigned short World::get_component_type() {
     return ecm->get_id<C>();
 }
 
 template <class C>
-bool World::has(const Entity &entity)
+inline bool World::has(const Entity &entity)
 {
     static const unsigned short component_type = get_component_type<C>();
     return em->has(entity, component_type);
 }
 
 template <class C>
-void World::remove(const Entity &entity)
+inline void World::remove(const Entity &entity)
 {
     static const unsigned short component_type = get_component_type<C>();
     to_remove.push(std::make_pair(entity, component_type));

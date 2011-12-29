@@ -6,7 +6,7 @@
 #include "transform_component.h"
 #include "world.h"
 
-PlayerControllerSubsystem::PlayerControllerSubsystem(World *_world) : 
+PlayerControllerSubsystem::PlayerControllerSubsystem(World &_world) : 
           Subsystem(_world)
 {
     events.register_keyboard_source();
@@ -50,6 +50,12 @@ void PlayerControllerSubsystem::process(unsigned int dt)
     for (std::set<Entity>::const_iterator iter = active.begin(); iter != active.end(); iter++)
     {
         TransformComponent *tc = world->get<TransformComponent>(*iter);
+
+        static const float max_speed = 0.1;
+        if (tc->velocity.magnitude() > max_speed)
+        {
+            tc->velocity *= 1 / tc->velocity.magnitude() * max_speed;
+        }
 
         if (button_states[MOVE_FORWARD])
         {

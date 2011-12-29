@@ -14,7 +14,7 @@ protected:
     std::vector<bool> interests;
     std::set<Entity> active;
 
-    Subsystem(World *world);
+    Subsystem(World &world);
 
     template <class C>
     void require()

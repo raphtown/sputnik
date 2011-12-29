@@ -3,7 +3,6 @@
 #include "debug.h"
 
 #include "subsystem.h"
-#include "subsystem_manager.h"
 
 World::World() : 
           em(new EntityManager())
@@ -19,10 +18,6 @@ World::~World()
     delete sm;
 }
 
-Subsystem *World::add_subsystem(Subsystem *subsystem) {
-    sm->register_subsystem(subsystem);
-    return subsystem;
-}
 
 const Entity World::create()
 {
