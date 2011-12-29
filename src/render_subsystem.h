@@ -13,6 +13,10 @@ private:
     const AllegroDisplay *display;
     const Entity *tracking;
 
+    static const unsigned int history_size = 100;
+    unsigned int history_pos;
+    unsigned int dt_history[history_size];
+
     void process_entity(const Vector &camera, const Entity &entity);
 
 public:
