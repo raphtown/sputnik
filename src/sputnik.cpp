@@ -1,5 +1,8 @@
 #include <allegro5/allegro.h>
+#include <allegro5/allegro_font.h>
 #include <allegro5/allegro_image.h>
+#include <allegro5/allegro_primitives.h>
+#include <allegro5/allegro_ttf.h>
 
 #include "debug.h"
 #include "sputnik_config.h"
@@ -9,6 +12,7 @@
 #include "platform.h"
 #include "world.h"
 
+#include "performance_subsystem.h"
 #include "physics_subsystem.h"
 #include "player_controller_subsystem.h"
 #include "player_component.h"
@@ -19,13 +23,16 @@
 int main(int argc, char **argv)
 {
     SPUTNIK_ASSERT(al_init(), "Failed to initialize allegro");
+    al_init_font_addon();
+    SPUTNIK_ASSERT(al_init_ttf_addon(), "Failed to initialize allegro ttf");
     SPUTNIK_ASSERT(al_init_image_addon(), "Failed to initialize allegro image");
+    SPUTNIK_ASSERT(al_init_primitives_addon(), "Failed to initialize allegro primitives");
 
     SPUTNIK_ASSERT(al_install_keyboard(), "Failed to install keyboard");
 
     SPUTNIK_ASSERT(al_filename_exists("../assets/ship.png"), "No ship.png");
 
-    AllegroDisplay display(640, 480);
+    AllegroDisplay display(800, 600);
     AllegroEvents events;
     events.register_display_source(&display);
     events.register_keyboard_source();
@@ -33,6 +40,7 @@ int main(int argc, char **argv)
     World world;
     world.add_subsystem(new PlayerControllerSubsystem(world));
     RenderSubsystem *rs = world.add_subsystem(new RenderSubsystem(world, display));
+    world.add_subsystem(new PerformanceSubsystem(world, display));
     world.add_subsystem(new PhysicsSubsystem(world));
 
     const Entity player = world.create();
@@ -52,8 +60,9 @@ int main(int argc, char **argv)
 
     const Entity other = world.create();
     TransformComponent *otc = world.add<TransformComponent>(other);
-    otc->position.x = 0;
-    otc->position.y = 0;
+    otc->position.x = 100;
+    otc->position.y = 40;
+    otc->rotation = 0;
 
     SpriteComponent *osc = world.add<SpriteComponent>(other);
     osc->filename = new char[100];

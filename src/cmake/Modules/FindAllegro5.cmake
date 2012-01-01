@@ -30,10 +30,6 @@ FIND_LIBRARY(ALLEGRO5_LIBRARY
   /Library/Frameworks
   /usr/local
   /usr
-  /sw
-  /opt/local
-  /opt/csw
-  /opt
 )
 
 FIND_LIBRARY(ALLEGRO5_LIBRARY_MAIN
@@ -46,10 +42,18 @@ FIND_LIBRARY(ALLEGRO5_LIBRARY_MAIN
   /Library/Frameworks
   /usr/local
   /usr
-  /sw
-  /opt/local
-  /opt/csw
-  /opt
+)
+
+FIND_LIBRARY(ALLEGRO5_LIBRARY_FONT
+  NAMES allegro_font
+  HINTS
+  $ENV{ALLEGRO5_DIR}
+  PATH_SUFFIXES lib64 lib
+  PATHS
+  ~/Library/Frameworks
+  /Library/Frameworks
+  /usr/local
+  /usr
 )
 
 FIND_LIBRARY(ALLEGRO5_LIBRARY_IMAGE
@@ -62,14 +66,34 @@ FIND_LIBRARY(ALLEGRO5_LIBRARY_IMAGE
   /Library/Frameworks
   /usr/local
   /usr
-  /sw
-  /opt/local
-  /opt/csw
-  /opt
+)
+
+FIND_LIBRARY(ALLEGRO5_LIBRARY_PRIMITIVES
+  NAMES allegro_primitives
+  HINTS
+  $ENV{ALLEGRO5_DIR}
+  PATH_SUFFIXES lib64 lib
+  PATHS
+  ~/Library/Frameworks
+  /Library/Frameworks
+  /usr/local
+  /usr
+)
+
+FIND_LIBRARY(ALLEGRO5_LIBRARY_TTF
+  NAMES allegro_ttf
+  HINTS
+  $ENV{ALLEGRO5_DIR}
+  PATH_SUFFIXES lib64 lib
+  PATHS
+  ~/Library/Frameworks
+  /Library/Frameworks
+  /usr/local
+  /usr
 )
 
 IF(ALLEGRO5_LIBRARY)
-  SET(ALLEGRO5_LIBRARIES "${ALLEGRO5_LIBRARY_IMAGE}" "${ALLEGRO5_LIBRARY}" "${ALLEGRO5_LIBRARY_MAIN}" CACHE STRING "Allegro5 Libraries")
+  SET(ALLEGRO5_LIBRARIES "${ALLEGRO5_LIBRARY}" "${ALLEGRO5_LIBRARY_MAIN}" "${ALLEGRO5_LIBRARY_IMAGE}" "${ALLEGRO5_LIBRARY_FONT}" "${ALLEGRO5_LIBRARY_PRIMITIVES}" "${ALLEGRO5_LIBRARY_TTF}" CACHE STRING "Allegro5 Libraries")
   SET(ALLEGRO5_INCLUDE_DIRS "${ALLEGRO5_INCLUDE_DIR}" CACHE STRING "Allegro5 Include Dirs")
   SET(ALLEGRO5_FOUND TRUE)
   #MESSAGE(STATUS ${ALLEGRO5_LIBRARY})
