@@ -12,6 +12,8 @@
 #include "platform.h"
 #include "world.h"
 
+#include "collide_component.h"
+#include "collide_subsystem.h"
 #include "performance_subsystem.h"
 #include "physics_subsystem.h"
 #include "player_controller_subsystem.h"
@@ -41,9 +43,15 @@ int main(int argc, char **argv)
     world.add_subsystem(new PlayerControllerSubsystem(world));
     RenderSubsystem *rs = world.add_subsystem(new RenderSubsystem(world, display));
     world.add_subsystem(new PerformanceSubsystem(world, display));
+    world.add_subsystem(new CollideSubsystem(world));
     world.add_subsystem(new PhysicsSubsystem(world));
 
     const Entity player = world.create();
+    CollideComponent *cc = world.add<CollideComponent>(player);
+    cc->half_width = 40;
+    cc->half_height = 20;
+    cc->radius = 40;
+    cc->weight = 100;
     world.add<PlayerComponent>(player);
 
     SpriteComponent *sc = world.add<SpriteComponent>(player);
@@ -52,13 +60,19 @@ int main(int argc, char **argv)
 
     world.add<TransformComponent>(player);
     TransformComponent *tc = world.get<TransformComponent>(player);
-    tc->position.x = 30;
-    tc->position.y = 30;
+    tc->position.x = 0;
+    tc->position.y = 0;
     
     world.refresh(player);
     rs->track(player);
 
     const Entity other = world.create();
+    CollideComponent *occ = world.add<CollideComponent>(other);
+    occ->half_width = 40;
+    occ->half_height = 20;
+    occ->radius = 40;
+    occ->weight = 100;
+
     TransformComponent *otc = world.add<TransformComponent>(other);
     otc->position.x = 100;
     otc->position.y = 40;
