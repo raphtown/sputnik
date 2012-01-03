@@ -50,7 +50,7 @@ int main(int argc, char **argv)
     CollideComponent *cc = world.add<CollideComponent>(player);
     cc->half_width = 40;
     cc->half_height = 20;
-    cc->radius = 40;
+    cc->radius = 80;
     cc->weight = 100;
     world.add<PlayerComponent>(player);
 
@@ -60,8 +60,7 @@ int main(int argc, char **argv)
 
     world.add<TransformComponent>(player);
     TransformComponent *tc = world.get<TransformComponent>(player);
-    tc->position.x = 0;
-    tc->position.y = 0;
+    tc->position << 0, 0;
     
     world.refresh(player);
     rs->track(player);
@@ -70,12 +69,11 @@ int main(int argc, char **argv)
     CollideComponent *occ = world.add<CollideComponent>(other);
     occ->half_width = 40;
     occ->half_height = 20;
-    occ->radius = 40;
+    occ->radius = 80;
     occ->weight = 100;
 
     TransformComponent *otc = world.add<TransformComponent>(other);
-    otc->position.x = 100;
-    otc->position.y = 40;
+    otc->position << 100, 40;
     otc->rotation = 0;
 
     SpriteComponent *osc = world.add<SpriteComponent>(other);

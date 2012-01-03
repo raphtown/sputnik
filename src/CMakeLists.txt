@@ -6,6 +6,7 @@ file(GLOB HEADER_FILES *.h)
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/Modules/")
 find_package(Allegro5 REQUIRED)
+find_package(Eigen3 REQUIRED)
 
 if(CMAKE_COMPILER_IS_GNUCXX)
     set(CMAKE_CXX_FLAGS "-Wall")

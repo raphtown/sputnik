@@ -2,6 +2,7 @@
 
 #include "transform_component.h"
 #include "world.h"
+#include "vector.h"
 
 PhysicsSubsystem::PhysicsSubsystem(World &_world) : Subsystem(_world)
 {
@@ -18,14 +19,10 @@ void PhysicsSubsystem::process(unsigned int dt)
         const Entity &entity = *iter;
         TransformComponent *tc = world->get<TransformComponent>(entity);
 
-        tc->position.x += tc->velocity.x * dt;
-        tc->position.y += tc->velocity.y * dt;
+        tc->position += tc->velocity * dt;
+        tc->velocity += tc->acceleration * dt;
 
-        tc->velocity.x += tc->acceleration.x * dt;
-        tc->velocity.y += tc->acceleration.y * dt;
-
-        tc->acceleration.x = 0;
-        tc->acceleration.y = 0;
+        tc->acceleration << 0, 0;
     }
 }
 

@@ -1,6 +1,7 @@
 #include "collide_subsystem.h"
 
 #include <cmath>
+#include <iostream>
 
 #include "collide_component.h"
 #include "transform_component.h"
@@ -12,78 +13,44 @@ CollideSubsystem::CollideSubsystem(World &world) : Subsystem(world)
     require<TransformComponent>();
 }
 
-static bool are_rects_colliding(
-        float a_x, float a_y, float a_half_width, float a_half_height, float a_rotation,
-        float b_x, float b_y, float b_half_width, float b_half_height, float b_rotation)
+static void to_points(const Vector &position, float half_width, float half_height,
+        float rotation, Vector points[4])
 {
-    float a_cos = cos(a_rotation);
-    float a_sin = sin(a_rotation);
-    float b_cos = cos(b_rotation);
-    float b_sin = sin(b_rotation);
+    float c = cos(rotation);
+    float s = sin(rotation);
 
-    // TL TR BR BL
-    float a_points[][2] = { 
-        {
-            a_x - (a_cos * a_half_width - a_sin * a_half_height),
-            a_y + (a_sin * a_half_width + a_cos * a_half_height),
-        },
-        {
-            a_x + (a_cos * a_half_width - a_sin * a_half_height),
-            a_y + (a_sin * a_half_width + a_cos * a_half_height),
-        },
-        {
-            a_x + (a_cos * a_half_width - a_sin * a_half_height),
-            a_y - (a_sin * a_half_width + a_cos * a_half_height),
-        },
-        {
-            a_x - (a_cos * a_half_width - a_sin * a_half_height),
-            a_y - (a_sin * a_half_width + a_cos * a_half_height),
-        },
-    };
-    float b_points[][2] = { 
-        {
-            b_x - (b_cos * b_half_width - b_sin * b_half_height),
-            b_y + (b_sin * b_half_width + b_cos * b_half_height),
-        },
-        {
-            b_x + (b_cos * b_half_width - b_sin * b_half_height),
-            b_y + (b_sin * b_half_width + b_cos * b_half_height),
-        },
-        {
-            b_x + (b_cos * b_half_width - b_sin * b_half_height),
-            b_y - (b_sin * b_half_width + b_cos * b_half_height),
-        },
-        {
-            b_x - (b_cos * b_half_width - b_sin * b_half_height),
-            b_y - (b_sin * b_half_width + b_cos * b_half_height),
-        },
-    };
+    points[0] = Vector(
+        position(0) - (c * half_width - s * half_height),
+        position(1) + (s * half_width + c * half_height));
+    points[1] = Vector( 
+        position(0) + (c * half_width - s * half_height),
+        position(1) + (s * half_width + c * half_height));
+    points[2] = Vector( 
+        position(0) + (c * half_width - s * half_height),
+        position(1) - (s * half_width + c * half_height));
+    points[3] = Vector( 
+        position(0) - (c * half_width - s * half_height),
+        position(1) - (s * half_width + c * half_height));
+}
 
+static bool are_rects_colliding(const Vector a[4], const Vector b[4])
+{
     for (unsigned int i = 1; i < 5; i++)
     {
-        float edge[2] = { 
-            a_points[i % 4][0] - a_points[i - 1][0],
-            a_points[i % 4][1] - a_points[i - 1][1],
-        };
-        float perp[2] = { -edge[1], edge[0] };
+        Vector edge = a[i % 4] - a[i - 1];
+        Vector perp(-edge[1], edge[0]);
 
-        float sides = 0;
+        float test = perp.dot(a[(i + 1) % 4] - a[i - 1]);
+        int side = (test > 0) - (test < 0);
+        
+        int count = 0;
         for (unsigned int j = 0; j < 4; j++)
         {
-            float test = 
-                perp[0] * (a_points[j][0] - a_points[i - 1][0]) +
-                perp[1] * (a_points[j][1] - a_points[i - 1][1]);
-            sides += (test > 0) - (test < 0);
+            test = perp.dot(b[j] - a[i - 1]);
+            count += (test > 0) - (test < 0);
         }
-        for (unsigned int j = 0; j < 4; j++)
-        {
-            float test = 
-                perp[0] * (b_points[j][0] - a_points[i - 1][0]) +
-                perp[1] * (b_points[j][1] - a_points[i - 1][1]);
-            sides += (test > 0) - (test < 0);
-        }
-
-        if (sides == -1 || sides == 1)
+        
+        if (count == 4 * -1 * side)
         {
             return false;
         }
@@ -91,29 +58,20 @@ static bool are_rects_colliding(
 
     for (unsigned int i = 1; i < 5; i++)
     {
-        float edge[2] = { 
-            b_points[i % 4][0] - b_points[i - 1][0],
-            b_points[i % 4][1] - b_points[i - 1][1],
-        };
-        float perp[2] = { -edge[1], edge[0] };
+        Vector edge = b[i % 4] - b[i - 1];
+        Vector perp(-edge[1], edge[0]);
 
-        float sides = 0;
+        float test = perp.dot(a[(i + 1) % 4] - b[i - 1]);
+        int side = (test > 0) - (test < 0);
+        
+        int count = 0;
         for (unsigned int j = 0; j < 4; j++)
         {
-            float test = 
-                perp[0] * (a_points[j][0] - b_points[i - 1][0]) +
-                perp[1] * (a_points[j][1] - b_points[i - 1][1]);
-            sides += (test > 0) - (test < 0);
-        }
-        for (unsigned int j = 0; j < 4; j++)
-        {
-            float test = 
-                perp[0] * (b_points[j][0] - b_points[i - 1][0]) +
-                perp[1] * (b_points[j][1] - b_points[i - 1][1]);
-            sides += (test > 0) - (test < 0);
+            test = perp.dot(b[j] - b[i - 1]);
+            count += (test > 0) - (test < 0);
         }
 
-        if (sides == -1 || sides == 1)
+        if (count == 4 * -1 * side)
         {
             return false;
         }
@@ -124,6 +82,14 @@ static bool are_rects_colliding(
 
 void CollideSubsystem::process(unsigned int dt)
 {
+    for (std::set<Entity>::const_iterator iter = active.begin();
+            iter != active.end();
+            iter++)
+    {
+        CollideComponent *cc = world->get<CollideComponent>(*iter);
+        cc->collided = false;
+    }
+
     // yes this is n^2
     for (std::set<Entity>::const_iterator iter = active.begin();
             iter != active.end();
@@ -149,25 +115,22 @@ void CollideSubsystem::process(unsigned int dt)
             float br = bc->radius;
             float bw = bc->weight;
 
+            Vector a_points[4];
+            to_points(at->position, ac->half_width, ac->half_height, at->rotation, a_points);
+            Vector b_points[4];
+            to_points(bt->position, bc->half_width, bc->half_height, bt->rotation, b_points);
             // ||a - b|| <= (ar * ar + br * br)^2
-            if ((at->position - bt->position).magnitude() <= (ar * ar + 2 * ar * br + br * br)
-                    && are_rects_colliding(
-                        at->position.x, 
-                        at->position.y,
-                        ac->half_width,
-                        ac->half_height,
-                        at->rotation,
-                        bt->position.x, 
-                        bt->position.y,
-                        bc->half_width,
-                        bc->half_height,
-                        bt->rotation))
+            if (//(at->position - bt->position).magnitude() <= (ar * ar + 2 * ar * br + br * br) &&
+                    are_rects_colliding(a_points, b_points))
             {
-                Vector anew = (bt->velocity * 2 * bw + at->velocity * (aw - bw)) / (aw + bw);
-                Vector bnew = (at->velocity * 2 * aw - bt->velocity * (aw - bw)) / (aw + bw);
+                std::cout << at->position << std::endl;
+                ac->collided = true;
+                bc->collided = true;
+                //Vector anew = (bt->velocity * 2 * bw + at->velocity * (aw - bw)) / (aw + bw);
+                //Vector bnew = (at->velocity * 2 * aw - bt->velocity * (aw - bw)) / (aw + bw);
 
-                at->velocity = anew;
-                bt->velocity = bnew;
+                //at->velocity = anew;
+                //bt->velocity = bnew;
             }
         }
     }

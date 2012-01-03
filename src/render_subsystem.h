@@ -2,10 +2,10 @@
 #define _RENDER_SUBSYSTEM_H
 
 #include "subsystem.h"
+#include "vector.h"
 
 class ALLEGRO_BITMAP;
 class AllegroDisplay;
-class Vector;
 class World;
 
 class RenderSubsystem : public Subsystem
