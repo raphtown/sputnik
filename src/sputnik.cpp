@@ -43,8 +43,8 @@ int main(int argc, char **argv)
     world.add_subsystem(new PlayerControllerSubsystem(world));
     RenderSubsystem *rs = world.add_subsystem(new RenderSubsystem(world, display));
     world.add_subsystem(new PerformanceSubsystem(world, display));
-    world.add_subsystem(new CollideSubsystem(world));
     world.add_subsystem(new PhysicsSubsystem(world));
+    world.add_subsystem(new CollideSubsystem(world));
 
     const Entity player = world.create();
     CollideComponent *cc = world.add<CollideComponent>(player);
@@ -61,6 +61,7 @@ int main(int argc, char **argv)
     world.add<TransformComponent>(player);
     TransformComponent *tc = world.get<TransformComponent>(player);
     tc->position << 0, 0;
+    tc->rotation = 3.14159f / 2;
     
     world.refresh(player);
     rs->track(player);
@@ -73,8 +74,8 @@ int main(int argc, char **argv)
     occ->weight = 100;
 
     TransformComponent *otc = world.add<TransformComponent>(other);
-    otc->position << 100, 40;
-    otc->rotation = 0;
+    otc->position << 100, 0;
+    otc->rotation = 1.2f;
 
     SpriteComponent *osc = world.add<SpriteComponent>(other);
     osc->filename = new char[100];

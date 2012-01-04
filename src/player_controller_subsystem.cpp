@@ -71,11 +71,11 @@ void PlayerControllerSubsystem::process(unsigned int dt)
 
         if (button_states[ROTATE_LEFT])
         {
-            tc->rotation -= 0.1;
+            tc->rotation += 0.1;
         }
         if (button_states[ROTATE_RIGHT])
         {
-            tc->rotation += 0.1;
+            tc->rotation -= 0.1;
         }
     }
 }
